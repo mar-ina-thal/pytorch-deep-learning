@@ -5,6 +5,7 @@ import torch
 
 from tqdm.auto import tqdm
 from typing import Dict, List, Tuple
+from sklearn.metrics import balanced_accuracy_score
 
 def train_step(model: torch.nn.Module, 
                dataloader: torch.utils.data.DataLoader, 
@@ -109,7 +110,7 @@ def test_step(model: torch.nn.Module,
 
             # Calculate and accumulate accuracy
             test_pred_labels = test_pred_logits.argmax(dim=1)
-            test_acc += ((test_pred_labels == y).sum().item()/len(test_pred_labels))
+            test_acc += balanced_accuracy_score(y, test_pred_labels)
 
     # Adjust metrics to get average loss and accuracy per batch 
     test_loss = test_loss / len(dataloader)
